@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="900" height="520" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- metadata.json -->
+  <rect x="270" y="20" width="360" height="60" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="450" y="45" text-anchor="middle" font-family="monospace" font-size="16" font-weight="700" fill="#1e3a8a">metadata.json</text>
+  <text x="450" y="66" text-anchor="middle" font-size="12" fill="#1d4ed8">테이블 전체 스냅샷 이력</text>
+
+  <line x1="450" y1="80" x2="450" y2="118" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- manifest list -->
+  <rect x="290" y="120" width="320" height="60" rx="10" fill="#ecfeff" stroke="#0891b2" stroke-width="2.5"/>
+  <text x="450" y="145" text-anchor="middle" font-family="monospace" font-size="16" font-weight="700" fill="#155e75">manifest list</text>
+  <text x="450" y="166" text-anchor="middle" font-size="12" fill="#0e7490">해당 스냅샷에 속한 manifest 목록</text>
+
+  <!-- branch lines to two manifest files -->
+  <line x1="450" y1="180" x2="450" y2="205" stroke="#64748b" stroke-width="2"/>
+  <line x1="450" y1="205" x2="230" y2="205" stroke="#64748b" stroke-width="2"/>
+  <line x1="450" y1="205" x2="670" y2="205" stroke="#64748b" stroke-width="2"/>
+  <line x1="230" y1="205" x2="230" y2="228" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <line x1="670" y1="205" x2="670" y2="228" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- manifest file A -->
+  <rect x="90" y="230" width="280" height="60" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="230" y="255" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#5b21b6">manifest file A</text>
+  <text x="230" y="276" text-anchor="middle" font-size="12" fill="#6d28d9">데이터 파일 경로 · 통계 정보</text>
+
+  <!-- manifest file B -->
+  <rect x="530" y="230" width="280" height="60" rx="10" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="670" y="255" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#5b21b6">manifest file B</text>
+  <text x="670" y="276" text-anchor="middle" font-size="12" fill="#6d28d9">데이터 파일 경로 · 통계 정보</text>
+
+  <!-- branches from A to two data files -->
+  <line x1="230" y1="290" x2="230" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="230" y1="315" x2="120" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="230" y1="315" x2="340" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="120" y1="315" x2="120" y2="338" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <line x1="340" y1="315" x2="340" y2="338" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- branches from B to two data files -->
+  <line x1="670" y1="290" x2="670" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="670" y1="315" x2="560" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="670" y1="315" x2="780" y2="315" stroke="#64748b" stroke-width="2"/>
+  <line x1="560" y1="315" x2="560" y2="338" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+  <line x1="780" y1="315" x2="780" y2="338" stroke="#64748b" stroke-width="2" marker-end="url(#arrow-gray)"/>
+
+  <!-- 4 data file boxes -->
+  <rect x="45" y="340" width="150" height="55" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="120" y="363" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#065f46">data file</text>
+  <text x="120" y="381" text-anchor="middle" font-size="10" fill="#047857">.parquet</text>
+
+  <rect x="265" y="340" width="150" height="55" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="340" y="363" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#065f46">data file</text>
+  <text x="340" y="381" text-anchor="middle" font-size="10" fill="#047857">.parquet</text>
+
+  <rect x="485" y="340" width="150" height="55" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="560" y="363" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#065f46">data file</text>
+  <text x="560" y="381" text-anchor="middle" font-size="10" fill="#047857">.parquet</text>
+
+  <rect x="705" y="340" width="150" height="55" rx="8" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="780" y="363" text-anchor="middle" font-family="monospace" font-size="12" font-weight="700" fill="#065f46">data file</text>
+  <text x="780" y="381" text-anchor="middle" font-size="10" fill="#047857">.parquet</text>
+
+  <text x="450" y="440" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="700">스냅샷 단위로 메타데이터가 계층 관리됨</text>
+  <text x="450" y="465" text-anchor="middle" font-size="13" fill="#475569">→ 파티션 정보도 메타데이터에 기록되어 hidden partitioning · time travel이 가능</text>
+</svg>

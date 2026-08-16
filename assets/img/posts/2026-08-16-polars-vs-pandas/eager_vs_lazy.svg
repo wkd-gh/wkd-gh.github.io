@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="560" viewBox="0 0 980 560" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="980" height="560" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ea580c"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#059669"/>
+    </marker>
+  </defs>
+
+  <text x="230" y="38" font-size="22" font-weight="700" text-anchor="middle" fill="#1e293b">Pandas — Eager</text>
+  <text x="750" y="38" font-size="22" font-weight="700" text-anchor="middle" fill="#1e293b">Polars — Lazy</text>
+
+  <!-- LEFT: Pandas -->
+  <rect x="60" y="65" width="340" height="60" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="230" y="90" text-anchor="middle" font-family="monospace" font-size="15" fill="#7c2d12">pd.read_csv(...)</text>
+  <text x="230" y="112" text-anchor="middle" font-size="13" fill="#9a3412">즉시 실행 → 전체 로드</text>
+  <line x1="230" y1="125" x2="230" y2="158" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <rect x="60" y="160" width="340" height="60" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="230" y="185" text-anchor="middle" font-family="monospace" font-size="15" fill="#7c2d12">df[df["fltRt"] &gt; 0]</text>
+  <text x="230" y="207" text-anchor="middle" font-size="13" fill="#9a3412">즉시 실행 → 새 DataFrame 생성</text>
+  <line x1="230" y1="220" x2="230" y2="253" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <rect x="60" y="255" width="340" height="60" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="230" y="280" text-anchor="middle" font-family="monospace" font-size="15" fill="#7c2d12">.groupby("mrktCtg")</text>
+  <text x="230" y="302" text-anchor="middle" font-size="13" fill="#9a3412">즉시 실행 → 그룹 객체 생성</text>
+  <line x1="230" y1="315" x2="230" y2="348" stroke="#ea580c" stroke-width="2" marker-end="url(#arrow-orange)"/>
+
+  <rect x="60" y="350" width="340" height="60" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="230" y="375" text-anchor="middle" font-family="monospace" font-size="15" fill="#7c2d12">.sum().reset_index()</text>
+  <text x="230" y="397" text-anchor="middle" font-size="13" fill="#9a3412">즉시 실행 → 최종 결과 생성</text>
+
+  <text x="230" y="450" text-anchor="middle" font-size="14" fill="#475569">단계마다 중간 결과를 즉시 계산 · 메모리 생성</text>
+  <text x="230" y="472" text-anchor="middle" font-size="14" fill="#475569">→ 최적화 없이 개별 실행</text>
+
+  <!-- RIGHT: Polars -->
+  <rect x="580" y="65" width="340" height="60" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="750" y="90" text-anchor="middle" font-family="monospace" font-size="15" fill="#1e3a8a">pl.scan_csv(...)</text>
+  <text x="750" y="112" text-anchor="middle" font-size="13" fill="#1d4ed8">실행 없이 계획만 기록</text>
+  <line x1="750" y1="125" x2="750" y2="158" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-blue)"/>
+
+  <rect x="580" y="160" width="340" height="60" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="750" y="185" text-anchor="middle" font-family="monospace" font-size="15" fill="#1e3a8a">.filter(pl.col("fltRt") &gt; 0)</text>
+  <text x="750" y="207" text-anchor="middle" font-size="13" fill="#1d4ed8">실행 없이 계획만 기록</text>
+  <line x1="750" y1="220" x2="750" y2="253" stroke="#2563eb" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-blue)"/>
+
+  <rect x="580" y="255" width="340" height="60" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="750" y="280" text-anchor="middle" font-family="monospace" font-size="15" fill="#1e3a8a">.group_by(...).agg(...)</text>
+  <text x="750" y="302" text-anchor="middle" font-size="13" fill="#1d4ed8">실행 없이 계획만 기록</text>
+  <line x1="750" y1="315" x2="750" y2="348" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <rect x="580" y="350" width="340" height="55" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2.5"/>
+  <text x="750" y="373" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Query Optimizer</text>
+  <text x="750" y="393" text-anchor="middle" font-size="12" fill="#1d4ed8">predicate / projection pushdown</text>
+  <line x1="750" y1="405" x2="750" y2="438" stroke="#059669" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+
+  <rect x="580" y="440" width="340" height="55" rx="10" fill="#ecfdf5" stroke="#059669" stroke-width="2.5"/>
+  <text x="750" y="463" text-anchor="middle" font-family="monospace" font-size="15" font-weight="700" fill="#065f46">.collect()</text>
+  <text x="750" y="483" text-anchor="middle" font-size="12" fill="#047857">최적화된 계획으로 1회 실행</text>
+
+  <text x="750" y="522" text-anchor="middle" font-size="14" fill="#475569">전체 쿼리를 최적화한 뒤 단 1번만 실행</text>
+</svg>

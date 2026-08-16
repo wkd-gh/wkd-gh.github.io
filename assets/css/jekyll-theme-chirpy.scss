@@ -1,0 +1,28 @@
+---
+---
+
+@use 'abstracts/variables' with (
+  $theme: '{{ site.theme_mode }}'
+);
+
+/* prettier-ignore */
+@use 'main
+{%- if jekyll.environment == 'production' -%}
+  .bundle
+{%- endif -%}
+';
+
+/* append your custom style below */
+
+/* Softer hover for the prev/next post navigation buttons:
+   default theme fills the whole button with solid blue on hover,
+   this uses the same subtle tint style as the post tag hover instead. */
+.post-navigation .btn:not(.disabled):hover {
+  background-color: var(--tag-hover);
+  border-color: var(--btn-border-color);
+  color: var(--link-color);
+}
+
+.post-navigation .btn:not(.disabled):hover::before {
+  color: var(--link-color);
+}
