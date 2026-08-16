@@ -14,7 +14,7 @@ _AI Days Seoul 2026 전체 아젠다_
 
 오전 키노트(Democratizing Data+AI)를 시작으로, 오후에는 Track별 고객사례 세션과 Analytics/AI Agent/Apps 기술 세션이 이어지는 하루짜리 컨퍼런스였다. 이 글에는 그중 인상 깊었던 고객사례 세션 위주로 정리했다.
 
-#### <i class="fas fa-bag-shopping fa-fw"></i> **카카오스타일 — 두집살림으로 천천히 이관하기**
+### <i class="fas fa-bag-shopping fa-fw"></i> **카카오스타일 — 두집살림으로 천천히 이관하기**
 
 카카오스타일의 기존 아키텍처는 전체적으로 AWS 기반이었다. Airflow는 EKS 위에서 돌아가고, Apache Hudi로 CDC를 처리하며, 파이썬 스크립트는 JupyterHub에서 개발·운영하는 구조였다.
 
@@ -26,7 +26,7 @@ _카카오스타일 기존(AS-IS) 아키텍처_
 ![카카오스타일 목표(TO-BE) 아키텍처](kakaostyle_to_be.jpg){: width="1600" height="900" }
 _카카오스타일 목표(TO-BE) 아키텍처, Databricks와 기존 AWS 스택을 병행_
 
-#### <i class="fas fa-layer-group fa-fw"></i> **NOL 유니버스 — Databricks 없이 만들었다면**
+### <i class="fas fa-layer-group fa-fw"></i> **NOL 유니버스 — Databricks 없이 만들었다면**
 
 NOL 유니버스 세션은 "Databricks 없이 이 시스템을 만들어야 했다면?"이라는 질문으로 시작했다. 실제로 Databricks 없이 동일한 데이터 플랫폼을 구성하려면, 모델 학습·배치·공통 인프라·런타임 영역마다 SageMaker, EMR, MWAA, Athena, Lambda, API Gateway, Secrets Manager처럼 서로 다른 서비스를 각각 학습하고 운영해야 한다.
 
@@ -38,7 +38,7 @@ _Databricks 없이 이 시스템을 만들었다면 필요했을 서비스들_
 ![NOL 유니버스 Overall Architecture](nol_universe_architecture.jpg){: width="1600" height="900" }
 _Unity Catalog + Workflow 기반 Self Segmentation 아키텍처_
 
-#### <i class="fas fa-shirt fa-fw"></i> **무신사 — Genie 정확도를 끌어올리는 데이터마트 설계**
+### <i class="fas fa-shirt fa-fw"></i> **무신사 — Genie 정확도를 끌어올리는 데이터마트 설계**
 
 무신사 세션은 Genie(Text2SQL)를 실제 운영에 붙이는 과정에서 얻은 노하우가 핵심이었다. 전사 지표 모니터링 대시보드 옆에 Genie Agent가 분석 프레임 기반으로 지표 보고를 자동화하고, Genie Chat으로 실시간 Ad-hoc 질의까지 받는 구조를 보여줬다.
 
@@ -68,7 +68,7 @@ _Genie Benchmark 설계, 대표적인 Error Type 기반으로 실패 유형을 �
 
 결국 이 5가지 유형만 의도적으로 막아도 훨씬 나은 결과를 얻을 수 있었다는 게 무신사 팀의 결론이었다. Genie 도입을 고민하고 있다면 이 데이터마트 설계 기준과 실수 유형 리스트만 챙겨도 시행착오를 꽤 줄일 수 있을 것 같다.
 
-#### <i class="fas fa-carrot fa-fw"></i> **한살림 — 수요예측 시스템**
+### <i class="fas fa-carrot fa-fw"></i> **한살림 — 수요예측 시스템**
 
 한살림은 온프레미스 DB(ERP)에서 DW를 거쳐 Databricks로 데이터를 가져오는 수요예측 시스템 구성도를 공유했다. AutoML로 모델을 학습하고, Databricks Notebook에서 Python 스크립트를 운영하며, Job Scheduler·Job Monitoring까지 Databricks Workflow로 관리하는 구조였다.
 
@@ -77,7 +77,7 @@ _한살림 수요예측 시스템 구성도 (현재)_
 
 솔직히 말하면 한살림 세션은 이 구성도 하나 말고는 크게 새로 얻어간 내용은 없었다. 그래도 온프레미스 DW와 클라우드 데이터 플랫폼을 JDBC/DBLink로 연동하는 하이브리드 구조 자체는 참고할 만했다.
 
-#### <i class="fas fa-tv fa-fw"></i> **LG전자 — 5명이 200명 넘는 사용자를 지원하는 법**
+### <i class="fas fa-tv fa-fw"></i> **LG전자 — 5명이 200명 넘는 사용자를 지원하는 법**
 
 개인적으로 가장 밀도 있게 들었던 세션이다. LG전자도 Airflow를 EKS 위에서 쓰고 있고, Databricks Delta Lakehouse를 Bronze → Silver → Gold 3단으로 나눠 운영하고 있었다(굳이 비유하자면 GCP의 GCS+BigQuery 조합과 비슷한 역할이라고 설명했다). 발표 중간중간 AWS S3를 상당히 강하게 칭찬하셨는데, "Databricks 행사니까 AWS 얘기는 최대한 자제하겠다"며 구체적인 이유는 아쉽게도 넘어가셨다.
 
@@ -101,7 +101,7 @@ _실시간 알림 · 비용 모니터링 · 성능 모니터링 · 데이터 품
 ![LG전자 운영과 확산](lg_operation_scale.jpg){: width="1600" height="900" }
 _운영과 확산 — 3→5명의 운영자로 200명 이상의 사용자를 지원_
 
-#### <i class="fas fa-flag-checkered fa-fw"></i> **마무리**
+### <i class="fas fa-flag-checkered fa-fw"></i> **마무리**
 
 이번 행사에서 가장 크게 남은 인상은, 같은 Databricks를 쓰더라도 회사가 처한 상황에 따라 접근 방식이 이렇게까지 달라질 수 있다는 점이었다. 리스크를 줄이려고 기존 스택과 한동안 병행하는 곳이 있는가 하면, Unity Catalog 안에 아예 다 몰아넣고 과감하게 통합해버리는 곳도 있었다. 정답이 하나로 정해져 있다기보다는, 조직 규모와 감내할 수 있는 리스크 수준에 따라 전략 자체가 달라진다는 걸 여러 회사의 사례로 직접 확인할 수 있었던 자리였다.
 
