@@ -28,16 +28,16 @@ _System Architecture Diagram_
 
 크게 세 흐름으로 나뉜다.
 
-- **수집/적재** : 공공데이터포털(금융위원회 증권상품정보) API를 Airflow DAG이 매일 새벽 배치로 호출하고, 원본 데이터를 GCS에 스테이징한 뒤 Databricks Delta Lake 테이블로 적재한다.
-- **분석/조회** : Databricks 플랫폼의 Dashboard와 Genie(Text2SQL)를 통해 적재된 데이터를 시각화하고, 자연어 질의로 조회할 수 있게 한다.
-- **서비스** : Genie API를 `genie-slack-bot`(Cloud Run)이 호출해서 슬랙에서 바로 질의응답이 가능하도록 연동했고, `genie-web-app`으로 웹/모바일 환경에서도 같은 경험을 제공한다.
+- **수집/적재** : 공공데이터포털(금융위원회 증권상품정보) API를 Airflow DAG가 매일 새벽 배치로 호출하고, 원본 데이터를 GCS에 스테이징한 뒤 Databricks Delta Lake 테이블로 적재한다.
+- **분석/조회** : Databricks 플랫폼의 Dashboard와 Genie(Text2SQL)를 통해 적재된 데이터를 시각화하고, 자연어 질의로 조회 및 분석할 수 있게 한다.
+- **서비스** : Genie API를 `genie-slack-bot`(Cloud Run)이 호출하여 슬랙에서 바로 질의응답이 가능하도록 연동했고, `genie-web-app`으로 웹/모바일 환경에서도 같은 경험을 제공한다.
 
-Airflow는 별도의 관리형 서비스 대신 GCE VM 위에 Docker Compose로 직접 올렸고, VM 상태는 Google Cloud Monitoring으로 감시하다가 이상이 있으면 슬랙으로 알림이 오도록 구성했다. 배포는 Cloud Build가 GitHub `main` 브랜치 푸시를 감지해서 자동으로 처리한다.
+Airflow는 별도의 관리형 서비스 대신 GCE VM 위에 Docker Compose로 직접 올렸고, VM 상태는 Google Cloud Monitoring으로 주시하다가 설정한 임계치 도달 시 슬랙으로 알림이 오도록 구성했다. 배포는 Cloud Build에서 GitHub `main` 브랜치 push를 감지하여 자동으로 처리한다.
 
 #### <i class="fas fa-cloud fa-fw"></i> **사용한 클라우드/기술 스택**
 
-- **Databricks** : Free Edition, Delta Lake 테이블 저장 및 Genie(Text2SQL) 분석
-- **GCP Free Credit** : GCE VM(Airflow 호스팅), Cloud Build(CI/CD), Cloud Run(Slack Bot·Web App 서버리스 배포), Secret Manager(환경변수/시크릿 관리)
+- **Databricks (Free Edition)** : Delta Lake 테이블 저장 및 Genie(Text2SQL) 분석
+- **GCP (Free Credit)** : GCE VM(Airflow 호스팅), Cloud Build(CI/CD), Cloud Run(Slack Bot·Web App 서버리스 배포), Secret Manager(환경변수/시크릿 관리), Cloud Monitoring(VM 상태 모니터링), GCS(원본 데이터 스테이징)
 - **Airflow** : 배치 오케스트레이션, Docker Compose 기반 셀프 호스팅
 - **Slack** : Airflow 실행 결과 및 인프라 알림, Genie 질의응답 채널
 
@@ -103,18 +103,17 @@ item_info 패턴을 그대로 따라야 하고 add_new_dag.md 체크리스트 �
 ```bash
 genie-slack-bot이 슬랙에서 지니를 사용하는 거라고 한다면
 genie-web-app은 웹이나 모바일 환경에서 지니를 사용하는건데
-이것도 똑같이 FastAPI를 사용할 것 같고 배포도 동일하게 Cloud Run으로 서버리스 환경에서 할 것 같아.
+백엔드는 FastAPI를 사용할 것 같고 배포는 동일하게 Cloud Run으로 서버리스 환경에서 할 것 같아.
 genie-web-app을 작성해줄 수 있을까?
 
 나의 요구사항은 아래와 같아.
-- 모바일에서도 사용이 가능해야하고 반응형 구조이어야 함, 웹도 반응형이어야 함
-- UI는 실제 대기업들과 같은 엔터프라이즈급의 UI가 필요함 (단순 css로는 안됨)
+- 모바일에서도 사용이 가능해야 하고 반응형 구조이어야 함, 웹도 반응형이어야 함
 - 서버는 FastAPI 사용, 배포는 Cloud Run으로 할거고 genie-web-app 레포가 main에 푸쉬되면
   자동으로 Cloud Run에 배포가 되도록 할거야
 - 필요한 환경변수 관리는 genie-slack-bot과 동일하게 GCP Secret Manager 서비스를 이용할거야
-- 회원가입, 로그인, 로그아웃, 회원탈퇴 같은 기능들도 있어야 함
-- 가능하다면 대시보드 제작하고 관리하는 기능도 추가되면 좋겠음
-- 지금까지 지니와 대화했던 채팅내역들도 히스토리로 남을 수 있는 기능도 있으면 좋겠음
+- 회원가입, 로그인, 로그아웃, 회원탈퇴 같은 기능들도 있어야 해
+- 가능하다면 대시보드 제작하고 관리하는 기능도 추가되면 좋겠어
+- 지금까지 지니와 대화했던 채팅내역들도 히스토리로 남을 수 있는 기능도 있으면 좋겠어
 
 기술스택: Cloud SQL, Cloud Run, Cloud Build, FastAPI 등
 ```
@@ -148,7 +147,7 @@ docker compose up -d
 
 #### <i class="fas fa-bell fa-fw"></i> **모니터링 및 알림**
 
-VM 리소스 모니터링 도구로 그라파나 대신 **Google Cloud Monitoring**을 선택했다. 그라파나를 쓰려면 결국 같은 VM 위에 Docker Compose로 하나 더 올려야 하는데, Airflow DAG이 몰리는 피크 타임(23:59)에 메모리 경합으로 OOM이 날 수 있다고 판단해서다.
+VM 리소스 모니터링 도구로 Grafana 대신 **Google Cloud Monitoring**을 선택했다. Grafana를 쓰려면 결국 같은 VM 위에 Docker Compose로 하나 더 올려야 하는데, Airflow DAG이 몰리는 피크 타임(23:59)에 메모리 경합으로 OOM이 날 수 있다고 판단해서다.
 
 구성한 내용은 다음과 같다.
 
@@ -170,7 +169,7 @@ _Airflow DAG 성공 Slack 알림_
 ![Airflow DAG 실패 Slack 알림](airflow_dag_failed_slack.png){: width="1482" height="992" }
 _Airflow DAG 실패 Slack 알림_
 
-위 실패 알림은 실제로 Databricks SQL Warehouse가 자동 중지(idle timeout)된 상태에서 배치가 돌면서 발생했던 케이스인데, Error Log까지 슬랙에 바로 남으니 원인 파악이 훨씬 빨랐다.
+위 실패 알림은 실제로 Databricks SQL Warehouse가 자동 중지(idle timeout)된 상태에서 배치가 돌면서 발생했던 케이스인데, Error Log와 링크까지 슬랙에 바로 남으니 원인 파악이 훨씬 빨랐다.
 
 #### <i class="fas fa-comments fa-fw"></i> **Databricks Genie 연동**
 
@@ -197,9 +196,11 @@ _Cloud Build 배포 성공 Slack 알림_
 
 #### <i class="fas fa-flag-checkered fa-fw"></i> **회고 및 앞으로의 계획**
 
-관리형 서비스 없이 GCE VM 하나에 Airflow를 직접 올리고, 모니터링부터 알림, 배포까지 전체 라이프사이클을 처음부터 끝까지 혼자 설계하고 구성해본 경험이었다. 특히 Databricks Genie로 자연어 질의가 실제로 동작하는 걸 보면서, PoC로 시작한 프로젝트치고는 꽤 그럴듯한 결과물이 나왔다고 생각한다.
+관리형 서비스 없이 GCE VM 한 대에 Airflow를 직접 올리고, 모니터링부터 알림, 배포까지 전체 라이프사이클을 처음부터 끝까지 혼자 설계하고 구성해보았는데, 아무것도 없는 상태에서 하나씩 쌓아 배포까지 이어가는 과정 자체가 꽤나 재밌었다.
 
-앞으로는 아래 방향으로 조금씩 더 다듬어볼 생각이다.
+특히 Genie로 자연어 질의가 실제로 동작하는 걸 확인했을 때, PoC 수준으로 짧게 구현해본 것치고는 결과물이 꽤 그럴듯하게 나와 신기했고 Databricks라는 플랫폼 자체가 생각보다 꽤 괜찮다는 인상을 많이 받았다. Genie 외에 다른 기능들도 하나씩 공부하고 실습해봐야할 것 같다.
+
+추후에는 아래 방향으로 조금씩 더 다듬어볼 생각이다.
 
 - `genie-web-app`의 대시보드 관리 기능 고도화
 - Delta Lake 테이블 컬럼 타입 최적화 (현재는 전부 `STRING`)

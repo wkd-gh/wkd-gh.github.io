@@ -1,5 +1,5 @@
 ---
-title: Airflow Sensor, BranchOperator 그리고 HiveOperator vs PrestoOperator
+title: Sensor, BranchOperator 그리고 HiveOperator vs PrestoOperator
 date: 2026-08-16 15:00:00 +0900
 categories: [Data Engineering, Airflow]
 tags: [Airflow, Hive, Presto]
@@ -7,7 +7,7 @@ image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-airflow-sensor-branch-hive-presto-operator/
 ---
 
-> Airflow로 배치를 짜다 보면 자주 쓰게 되는 Sensor, BranchOperator, 그리고 헷갈리기 쉬운 HiveOperator와 PrestoOperator의 차이를 정리해본 글입니다.
+> Airflow DAG를 작성하다 보면 자주 쓰게 되는 Sensor, BranchOperator, 그리고 헷갈리기 쉬운 HiveOperator와 PrestoOperator의 차이를 정리해본 글입니다.
 
 이 글에서 예시로 드는 파이프라인은 대략 아래와 같은 구조다. 상류 DAG을 기다렸다가(Sensor), 조건에 따라 분기하고(Branch), Hive로 무거운 적재를 한 뒤 Presto로 빠르게 검증하고, 두 분기가 결과를 각각 다시 하나의 task로 합류(trigger_rule)하는 흐름이다.
 
@@ -92,7 +92,7 @@ validate_row_count = PrestoOperator(
 
 Connection 설정도 다르다. HiveOperator는 HiveServer2/Metastore Thrift 연결을, PrestoOperator는 Presto/Trino 클러스터의 HTTP(S) 엔드포인트를 사용한다. 그래서 같은 DAG 안에서도 목적에 따라 두 Connection을 함께 등록해두는 경우가 많다.
 
-#### <i class="fas fa-scale-balanced fa-fw"></i> **실무에서는 언제 무엇을 쓰는가**
+#### <i class="fas fa-scale-balanced fa-fw"></i> **그래서 언제 무엇을 쓰는지?**
 
 내가 배치를 짤 때 기준으로 삼는 건 이렇다.
 
@@ -103,4 +103,4 @@ Connection 설정도 다르다. HiveOperator는 HiveServer2/Metastore Thrift 연
 
 #### <i class="fas fa-flag-checkered fa-fw"></i> **정리**
 
-Sensor와 BranchOperator는 파이프라인의 흐름 제어를, HiveOperator와 PrestoOperator는 어떤 엔진에 쿼리를 실행시킬지를 결정하는 역할이다. 네 가지 모두 자주 쓰이는 만큼, 각각이 내부적으로 무엇을 기다리고 어떤 엔진을 호출하는지 정확히 이해하고 쓰는 게 불필요한 재시도나 리소스 낭비를 줄이는 데 도움이 되는 것 같다.
+Sensor와 BranchOperator는 파이프라인의 흐름 제어를, HiveOperator와 PrestoOperator는 어떤 엔진으로 쿼리를 실행할지를 정하는 역할이다. 네 가지 모두 자주 쓰이는 만큼, 각각이 내부적으로 무엇을 기다리고 어떤 엔진을 호출하는지 정확히 이해하고 쓰는 것이 불필요한 재시도나 리소스 낭비를 줄이는 데 도움이 될 것 같다.

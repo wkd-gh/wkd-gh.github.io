@@ -1,5 +1,5 @@
 ---
-title: 판다스 대신 폴라스(Polars), 써볼 만할까
+title: pandas 대신 Polars, 써볼 만할까?
 date: 2026-08-16 13:00:00 +0900
 categories: [Data Engineering, Python]
 tags: [Python, Pandas, Polars]
@@ -7,7 +7,7 @@ image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-polars-vs-pandas/
 ---
 
-> 최근 커뮤니티에서 유독 자주 보이는 Polars, 실제로 Pandas와 뭐가 다른지 정리해본 글입니다.
+> 최근 커뮤니티에서 유독 자주 보이는 Polars, 실제로 Pandas와 뭐가 어떻게 다른건지 정리해본 글입니다.
 
 #### <i class="fas fa-question fa-fw"></i> **왜 지금 Polars인가**
 

@@ -7,7 +7,7 @@ image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-apache-iceberg-on-hive/
 ---
 
-> 회사에서 사용 중인 Hive 환경에 요즘 핫한 오픈 테이블 포맷, Apache Iceberg를 왜 붙이려고 하는지 정리해본 글입니다.
+> 사내에서 사용 중인 Hive 환경에, 요즘 핫하다는 오픈 테이블 포맷인 Apache Iceberg를 도입해볼까 고민이 되어 사전에 정리해본 글입니다.
 
 #### <i class="fas fa-triangle-exclamation fa-fw"></i> **기존 Hive 테이블의 한계**
 
