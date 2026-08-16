@@ -14,12 +14,12 @@ timezone: Asia/Seoul
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: 장호의 데이터 엔지니어링 로그 # 원하는 문구로 자유롭게 수정하세요
+title: wkd-gh # 타이틀
 
-tagline: 데이터 엔지니어 성장기 · 회고 · 스터디 노트 # 부제목
+tagline: Data Analytics Engineer # 부제목
 
 description: >- # used by seo meta and the atom feed
-  데이터 엔지니어 1년차의 업무 회고, 사이드 프로젝트, 스터디 기록을 정리하는 블로그입니다.
+  데이터 엔지니어 1년차의 회고, 사이드 프로젝트, 스터디 내용을 정리하는 개인 블로그입니다.
 
 # Fill in the protocol & hostname for your site.
 # E.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -34,16 +34,14 @@ twitter:
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
-  name: 장호
-  email: example@domain.com # 본인 이메일로 변경하세요
+  name: wkd-gh
+  email: sjh75555@naver.com # 본인 이메일로 변경하세요
   fediverse_handle: # fill in your fediverse handle. E.g. "@username@domain.com"
   links:
     # The first element serves as the copyright owner's link
     - https://github.com/wkd-gh # change to your GitHub homepage
-    # - https://www.linkedin.com/in/your-linkedin
-    # Uncomment below to add more social links
-    # - https://www.facebook.com/username
-    # - https://www.linkedin.com/in/username
+    # - https://www.linkedin.com/in/wkd-gh/
+    # - https://www.youtube.com/channel/UClgvAnWz-bwcQV6oqrcU7Iw
 
 # Site Verification Settings
 webmaster_verifications:
@@ -99,7 +97,7 @@ theme_mode: # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: /assets/img/profile/gongsim.jpeg
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
@@ -120,7 +118,7 @@ actions:
 
 comments:
   # Global switch for the post-comment system. Keeping it empty means disabled.
-  provider: # [disqus | utterances | giscus]
+  provider: giscus # [disqus | utterances | giscus]
   # The provider options are as follows:
   disqus:
     shortname: # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
@@ -130,10 +128,10 @@ comments:
     issue_term: # < url | pathname | title | ...>
   # Giscus options › https://giscus.app
   giscus:
-    repo: # <gh-username>/<repo>
-    repo_id:
-    category:
-    category_id:
+    repo: wkd-gh/wkd-gh.github.io
+    repo_id: R_kgDOT5seqw
+    category: Announcements
+    category_id: DIC_kwDOT5seq84DDe4u
     mapping: # optional, default to 'pathname'
     strict: # optional, default to '0'
     input_position: # optional, default to 'bottom'
