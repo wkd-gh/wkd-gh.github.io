@@ -1,0 +1,45 @@
+<!-- The Footer -->
+<!-- Custom override of jekyll-theme-chirpy's default footer.html:
+     adds a privacy policy link and a GoatCounter-powered visitor count. -->
+
+<footer
+  aria-label="Site Info"
+  class="
+    d-flex flex-column justify-content-center text-muted
+    flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3
+  "
+>
+  <p>
+    {{- '©' }}
+    <time>{{ 'now' | date: '%Y' }}</time>
+
+    {% if site.social.links %}
+      <a href="{{ site.social.links[0] }}">{{ site.social.name }}</a>.
+    {% else %}
+      <em class="fst-normal">{{ site.social.name }}</em>.
+    {% endif %}
+
+    &middot; <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a>
+
+    {% if site.analytics.goatcounter.id %}
+      &middot; <span id="visitor-count"></span>
+    {% endif %}
+  </p>
+</footer>
+
+{% if site.analytics.goatcounter.id %}
+  <script>
+    fetch('https://{{ site.analytics.goatcounter.id }}.goatcounter.com/counter/TOTAL.json')
+      .then((res) => (res.ok ? res.json() : Promise.reject(res.status)))
+      .then((data) => {
+        const el = document.getElementById('visitor-count');
+        if (el && data.count) {
+          el.textContent = 'Visitors: ' + data.count;
+        }
+      })
+      .catch(() => {
+        /* GoatCounter의 "Allow adding a visitor counter to your website" 설정이
+           꺼져 있거나 아직 집계된 데이터가 없으면 조용히 숨김 처리 */
+      });
+  </script>
+{% endif %}
