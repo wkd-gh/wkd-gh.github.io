@@ -3,6 +3,7 @@ title: Hive에 Apache Iceberg 테이블 포맷 도입해보기
 date: 2026-08-16 14:00:00 +0900
 categories: [Data Engineering, Hive]
 tags: [Hive, Iceberg, Data Lake]
+mermaid: true
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-apache-iceberg-on-hive/
 ---
@@ -35,6 +36,28 @@ metadata.json (테이블 전체 스냅샷 이력)
 
 ![Apache Iceberg 메타데이터 계층 구조](iceberg_metadata_tree.svg){: width="900" height="520" }
 _Apache Iceberg 메타데이터 계층 구조_
+
+"원자적 커밋"이 실제로 어떻게 이뤄지는지는, 커밋 시점에 무슨 일이 일어나는지를 시간순으로 보면 이해가 빠르다.
+
+```mermaid
+sequenceDiagram
+    participant Wr as Writer (Spark/Trino)
+    participant St as Storage (HDFS/S3)
+    participant Cat as Hive Catalog (Metastore)
+
+    Wr->>St: 새 data file 기록 (.parquet)
+    Wr->>St: manifest file 생성 (변경된 데이터 파일 목록)
+    Wr->>St: manifest list 생성 (신규 스냅샷 구성)
+    Wr->>St: 새 metadata.json 기록
+    Wr->>Cat: 현재 metadata 포인터를 새 metadata.json으로 원자적 교체 (CAS)
+    alt 포인터 교체 성공
+        Cat-->>Wr: 커밋 성공, 새 스냅샷이 즉시 조회 가능
+    else 다른 writer가 먼저 커밋함
+        Cat-->>Wr: 충돌 감지, 최신 상태 기준으로 재시도
+    end
+```
+
+핵심은 실제 데이터 파일은 미리 다 써두고, **카탈로그의 metadata 포인터 하나만 원자적으로 교체**한다는 점이다. 이 포인터 교체가 성공하는 순간 새 스냅샷이 통째로 반영되고, 그 전까지는 기존 스냅샷을 읽는 쪽에 아무 영향도 없다. 동시에 여러 writer가 커밋을 시도하면 포인터를 먼저 교체한 쪽만 성공하고, 나머지는 최신 상태를 기준으로 재시도하는 낙관적 동시성 제어(optimistic concurrency) 방식이다.
 
 이 구조 덕분에 아래 기능들이 가능해진다.
 

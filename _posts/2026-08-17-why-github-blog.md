@@ -3,6 +3,7 @@ title: GitHub 블로그 이게 뭔데?
 date: 2026-08-17 17:00:00 +0900
 categories: [Project, Side Project]
 tags: [GitHub, Blog]
+mermaid: true
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-17-why-github-blog/
 ---
@@ -31,13 +32,26 @@ velog나 medium, 티스토리처럼 이미 잘 만들어진 플랫폼도 많은�
 - **호스팅** : GitHub Pages
 - **CI/CD** : GitHub Actions
 
-배포 흐름은 이렇다.
+글을 쓰고 배포하고, 방문자가 댓글을 달거나 통계가 쌓이기까지의 전체 흐름을 그려보면 대략 이렇다.
+
+```mermaid
+flowchart LR
+    A["글 작성"] --> B["git push"]
+    B --> C["GitHub Actions<br/>빌드 · 검증 · 배포"]
+    C --> D(["GitHub Pages"])
+    D --> E["방문자"]
+    E -->|댓글| F["Giscus"]
+    E -->|방문| G["GoatCounter"]
+```
+
+정리하면 이렇다.
 
 1. `main` 브랜치에 푸시
 2. GitHub Actions `build` job이 Ruby 환경을 세팅하고 `bundle exec jekyll build`로 사이트를 빌드
 3. `html-proofer`로 깨진 링크·마크업 오류가 없는지 검증
 4. 빌드 결과물을 아티팩트로 업로드
 5. `deploy` job이 GitHub Pages에 실제로 배포
+6. 방문자가 들어오면, 댓글은 Giscus를 거쳐 GitHub Discussions에, 방문 기록은 GoatCounter로 흘러가서 footer의 방문자 수와 게시글 조회수로 이어진다
 
 push 한 번이면 빌드 검증부터 배포까지 자동으로 끝난다는 게 가장 만족스러운 부분이다.
 

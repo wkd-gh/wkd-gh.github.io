@@ -3,6 +3,7 @@ title: Sensor, BranchOperator 그리고 HiveOperator vs PrestoOperator
 date: 2026-08-16 15:00:00 +0900
 categories: [Data Engineering, Airflow]
 tags: [Airflow, Hive, Presto]
+mermaid: true
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-airflow-sensor-branch-hive-presto-operator/
 ---
@@ -22,6 +23,28 @@ Sensor는 특정 조건이 충족될 때까지 대기하다가, 조건이 만족
 
 - **`poke` 모드(기본값)** : 워커 슬롯을 계속 점유한 채로 주기적으로 조건을 확인한다. 대기 시간이 길어지면 워커 리소스를 낭비하게 된다.
 - **`reschedule` 모드** : 조건이 충족되지 않으면 워커 슬롯을 반납하고, 다음 체크 시점에 다시 스케줄링된다. 대기 시간이 긴 센서라면 이쪽이 훨씬 효율적이다.
+
+`reschedule` 모드에서 워커 슬롯이 반납됐다가 다시 할당되는 과정을 시간순으로 그리면 이렇다.
+
+```mermaid
+sequenceDiagram
+    participant S as Scheduler
+    participant Wk as Worker
+    participant Ext as 상류 DAG (external_task_id)
+
+    S->>Wk: wait_for_upstream 실행 (mode=reschedule)
+    Wk->>Ext: 조건 확인 (poke)
+    Ext-->>Wk: 아직 완료 안 됨
+    Wk-->>S: 워커 슬롯 반납, up_for_reschedule 상태로 전환
+    Note over S,Wk: poke_interval(60s) 대기, 그 사이 워커는 다른 task 처리 가능
+
+    S->>Wk: 워커 슬롯 재할당, 다시 확인
+    Wk->>Ext: 조건 확인 (poke)
+    Ext-->>Wk: 완료됨
+    Wk-->>S: task 성공 처리, 다음 task(branch_by_row_count)로 진행
+```
+
+`poke` 모드였다면 대기하는 내내 Worker가 슬롯을 붙들고 있었겠지만, `reschedule` 모드는 대기 구간(`poke_interval` 사이)에 슬롯을 반납해서 다른 task가 그 자리를 쓸 수 있게 해준다.
 
 ```python
 from airflow.sensors.external_task import ExternalTaskSensor

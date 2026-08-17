@@ -3,6 +3,7 @@ title: ETF 데이터 파이프라인 플랫폼
 date: 2026-08-16 12:00:00 +0900
 categories: [Project, Side Project]
 tags: [ETF, Airflow, Databricks]
+mermaid: true
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-16-etf-pipeline-platform/
 ---
@@ -173,7 +174,23 @@ _Airflow DAG 실패 Slack 알림_
 
 ### <i class="fas fa-comments fa-fw"></i> **Databricks Genie 연동**
 
-`genie-slack-bot`을 통해 슬랙에서 `@Databricks`를 멘션하면 Genie가 적재된 Delta 테이블을 대상으로 자연어 질의를 SQL로 변환해서 답변해준다.
+`genie-slack-bot`을 통해 슬랙에서 `@Databricks`를 멘션하면 Genie가 적재된 Delta 테이블을 대상으로 자연어 질의를 SQL로 변환해서 답변해준다. 질문 하나가 답변으로 돌아오기까지의 흐름을 시간순으로 그려보면 이렇다.
+
+```mermaid
+sequenceDiagram
+    participant U as 사용자 (Slack)
+    participant B as genie-slack-bot (Cloud Run)
+    participant G as Databricks Genie
+    participant W as SQL Warehouse (Delta Lake)
+
+    U->>B: "@Databricks 레버리지·인덱스·선물 제외하고..."
+    B->>G: 질의 전달 (Genie Conversation API)
+    G->>G: 자연어 질문 → SQL 생성
+    G->>W: 생성된 SQL 실행
+    W-->>G: 조회 결과 반환
+    G-->>B: 답변 + 생성된 SQL + 근거 지표
+    B-->>U: 슬랙 메시지로 결과 전달
+```
 
 ![Genie 답변 예시-1](genie_slack_qna_question.png){: width="1430" height="1524" }
 _Genie 질문 예시-1_
