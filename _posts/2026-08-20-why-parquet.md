@@ -2,7 +2,7 @@
 title: 왜 다들 파케이, 파케이 하는 걸까
 date: 2026-08-20 20:00:00 +0900
 categories: [Data Engineering, Data]
-tags: [Parquet, CSV, JSON, File Format]
+tags: [Parquet, CSV, JSON, ORC, Arrow, File Format]
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-20-why-parquet/
 ---
@@ -50,22 +50,36 @@ _Row Group → Column Chunk → Page, 그리고 이걸 가리키는 Footer_
 - **Page** : Column Chunk를 더 잘게 쪼갠 실제 압축·인코딩 단위.
 - **Footer** : 파일 맨 끝에 스키마 정보와 각 Row Group/Column Chunk의 통계(min/max, null count), 오프셋 위치가 담겨 있다. 엔진은 파일을 열 때 이 Footer부터 읽어서 "어디를 읽고 어디를 건너뛸지" 미리 계획을 세운다.
 
-### <i class="fas fa-scale-balanced fa-fw"></i> **CSV / JSON / XML과 비교하면**
+### <i class="fas fa-scale-balanced fa-fw"></i> **CSV / JSON / XML / ORC와 비교하면**
 
-| 항목 | CSV | JSON | XML | Parquet |
-| --- | --- | --- | --- | --- |
-| 저장 방식 | Row 기반 | Row 기반 | Row 기반 | **Column 기반** |
-| 스키마 | 없음 (전부 문자열) | 느슨함 (타입은 있지만 강제 안 됨) | 있음 (태그 기반) | **있음, 파일에 내장 + 강타입** |
-| 압축 효율 | 낮음 | 낮음 | 매우 낮음 (태그 오버헤드) | **높음** |
-| 컬럼 일부만 조회 | 불가 (전체 스캔) | 불가 | 불가 | **가능** |
-| 사람이 직접 읽기 | 쉬움 | 쉬움 | 쉬움 | 어려움 (바이너리) |
-| 대표 사용처 | 엑셀 내보내기, 간단한 로그 | API 응답, 설정 파일 | 레거시 시스템 연동 | 데이터 웨어하우스, 분석 워크로드 |
+| 항목 | CSV | JSON | XML | ORC | Parquet |
+| --- | --- | --- | --- | --- | --- |
+| 저장 방식 | Row 기반 | Row 기반 | Row 기반 | Column 기반 | **Column 기반** |
+| 스키마 | 없음 (전부 문자열) | 느슨함 (타입은 있지만 강제 안 됨) | 있음 (태그 기반) | 있음, 파일에 내장 | **있음, 파일에 내장 + 강타입** |
+| 압축 효율 | 낮음 | 낮음 | 매우 낮음 (태그 오버헤드) | 높음 | **높음** |
+| 컬럼 일부만 조회 | 불가 (전체 스캔) | 불가 | 불가 | 가능 | **가능** |
+| 사람이 직접 읽기 | 쉬움 | 쉬움 | 쉬움 | 어려움 (바이너리) | 어려움 (바이너리) |
+| 대표 사용처 | 엑셀 내보내기, 간단한 로그 | API 응답, 설정 파일 | 레거시 시스템 연동 | Hive/Hadoop 생태계 | 데이터 웨어하우스, 범용 분석 워크로드 |
 
-표로 정리해놓고 보면 명확하다. CSV/JSON/XML은 **"사람이 읽기 좋고, 시스템 간 주고받기 편한"** 포맷이고, Parquet은 **"기계가 대량으로 분석하기 좋은"** 포맷이다. 애초에 설계 목적 자체가 다르다.
+표로 정리해놓고 보면 명확하다. CSV/JSON/XML은 **"사람이 읽기 좋고, 시스템 간 주고받기 편한"** Row 기반 포맷이고, ORC와 Parquet은 **"기계가 대량으로 분석하기 좋은"** Column 기반 포맷이다. 애초에 설계 목적 자체가 다르기 때문에, 사실 이 비교는 Parquet 입장에서 좀 불공평한 승부다.
+
+진짜 라이벌은 따로 있다 — 같은 컬럼 기반인 ORC다.
+
+### <i class="fas fa-people-arrows fa-fw"></i> **그럼 ORC랑 붙으면? Arrow는 뭔데?**
+
+**ORC (Optimized Row Columnar)** 도 Parquet와 마찬가지로 컬럼 기반 저장, 컬럼 통계 기반 Predicate Pushdown, 압축·인코딩을 전부 지원한다. 원래 Hive 성능 개선을 위해 만들어진 포맷이라, 태생부터 Hive/Hadoop 생태계에 가깝다.
+
+실제 벤치마크들을 찾아보면 우열이 뚜렷하지 않다. 처리 엔진에 따라 갈리는데, Hive 위에서는 ORC가, SparkSQL 위에서는 Parquet가 더 좋은 성능을 보이는 경향이 있다. 압축률도 조건에 따라 뒤집힌다 — ZLIB 압축을 쓴 ORC가 풀 스캔 기준 최대 60% 수준까지 개선되는 경우가 있는 반면, Parquet은 기본 압축(Snappy) 기준 개선 폭이 7% 정도에 그친다는 벤치마크도 있다. 반대로 Parquet의 Dictionary Encoding이 더 공격적이라 파일 크기가 더 작게 나온 사례도 있다. 즉 "Parquet가 저장 방식 자체 때문에 압도적으로 이긴다"는 CSV/JSON/XML 비교와는 다르게, ORC와는 진짜 대등한 싸움이라는 게 맞는 표현이다.
+
+그럼 실무에서는 왜 Parquet 쪽으로 더 많이 쓰일까. 성능보다는 **생태계** 문제에 가깝다. Parquet은 Spark의 기본 저장 포맷이고, Delta Lake·Iceberg 같은 오픈 테이블 포맷의 기본 파일 포맷이며, BigQuery·Snowflake·Athena·Redshift Spectrum 등 대부분의 클라우드 데이터 웨어하우스가 네이티브로 지원한다. ORC는 여전히 강력하지만 상대적으로 Hive/Hadoop 생태계 안에서 더 존재감이 크다.
+
+**Apache Arrow**는 아예 다른 카테고리다. Arrow는 애초에 **디스크에 압축해서 저장하기 위한 포맷이 아니라, 메모리 위에서 여러 프로세스/언어가 데이터를 복사 없이 주고받기 위한 인메모리(in-memory) 포맷**이다. Parquet·ORC가 "디스크에 최대한 작게, 효율적으로 저장하기"가 목표라면, Arrow는 "메모리에 올라온 데이터를 디코딩 과정 없이 최대한 빠르게 처리하기"가 목표다. 그래서 Arrow 파일은 압축을 거의 하지 않고, 디스크 상의 표현과 메모리 상의 표현이 동일하게 설계되어 있다.
+
+실제로는 둘이 경쟁하기보다 함께 쓰인다. Spark·DuckDB·Polars 같은 엔진들이 디스크의 Parquet 파일을 읽어서, 실제 연산은 메모리에 Arrow 포맷으로 올려놓고 처리하는 식이다. "저장은 Parquet, 연산은 Arrow"인 셈이라, 애초에 같은 문제를 놓고 겨루는 관계가 아니다.
 
 ### <i class="fas fa-circle-question fa-fw"></i> **그럼 CSV·JSON은 언제 쓰나**
 
-Parquet이 항상 정답인 건 아니다.
+Parquet가 항상 정답인 건 아니다.
 
 - **사람이 직접 열어봐야 하는 경우** : 엑셀로 열어서 확인하거나 공유해야 한다면 CSV가 압도적으로 편하다.
 - **API 요청/응답, 설정 파일** : 구조가 자주 바뀌고 사람이 직접 다뤄야 하는 상황에는 JSON이 낫다.
@@ -76,4 +90,4 @@ Parquet이 항상 정답인 건 아니다.
 
 ### <i class="fas fa-flag-checkered fa-fw"></i> **정리**
 
-결국 핵심은 하나다. Row 기반 포맷은 "한 건을 통째로 다루기"에 최적화돼 있고, Column 기반인 Parquet은 "특정 컬럼들을 대량으로 훑기"에 최적화돼 있다. 분석 워크로드는 거의 항상 후자에 해당하기 때문에, 데이터 엔지니어링 생태계에서 Parquet이 사실상 기본값이 된 거라고 생각한다.
+결국 핵심은 하나다. Row 기반 포맷은 "한 건을 통째로 다루기"에 최적화돼 있고, Column 기반인 Parquet은 "특정 컬럼들을 대량으로 훑기"에 최적화돼 있다. 분석 워크로드는 거의 항상 후자에 해당하기 때문에, 데이터 엔지니어링 생태계에서 Parquet가 사실상 기본값이 된 거라고 생각한다.
