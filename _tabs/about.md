@@ -32,9 +32,23 @@ order: 1
 
 **Collaboration:**&nbsp;&nbsp;`Slack` `Git` `Notion`
 
+## <i class="fas fa-graduation-cap"></i> Education
+
+| 기간 | 기관 | 내용 |
+|:---|:---|:---|
+| 2019.03 ~ 2026.02 (졸업) | **명지대학교** | 융합소프트웨어학부 데이터사이언스 전공 |
+| 2025.04 ~ 2025.05 | **Tableau Bootcamp 27th** | Certificate of Completion |
+| 2024.08 ~ 2025.02 | **SK Networks** | Family AI Camp · 데이터 분석 및 LLM 개발 과정 수료 |
+
+## <i class="fas fa-certificate"></i> Certifications
+
+| 자격증 | 취득일 | 자격번호 |
+|:---|:---|:---|
+| SQLD | 2024.09.20 (제54회) | 054013920 |
+| ADsP | 2023.09.15 (제38회) | 038008827 |
+
 ## <i class="fas fa-address-card"></i> Contact
 
-| | |
 |:---|:---|
 | <i class="fab fa-github fa-fw"></i> GitHub | [github.com/wkd-gh](https://github.com/wkd-gh) |
 | <i class="fab fa-linkedin fa-fw"></i> LinkedIn | [linkedin.com/in/wkd-gh](https://www.linkedin.com/in/wkd-gh) |
