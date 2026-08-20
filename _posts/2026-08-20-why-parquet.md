@@ -1,7 +1,7 @@
 ---
 title: 왜 다들 파케이, 파케이 하는 걸까
 date: 2026-08-20 20:00:00 +0900
-categories: [Data Engineering, Data Format]
+categories: [Data Engineering, Data]
 tags: [Parquet, CSV, JSON, File Format]
 image: thumbnail.png
 media_subpath: /assets/img/posts/2026-08-20-why-parquet/
