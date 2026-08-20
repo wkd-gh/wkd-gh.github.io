@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="900" height="560" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">하나의 Parquet 파일 (.parquet)</text>
+
+  <!-- Row Group 1 -->
+  <rect x="40" y="50" width="820" height="130" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="60" y="72" font-size="14" font-weight="700" fill="#334155">Row Group 1</text>
+
+  <!-- column chunk id -->
+  <rect x="60" y="82" width="250" height="85" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="185" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Column Chunk: id</text>
+  <rect x="75"  y="110" width="105" height="24" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="127" y="126" text-anchor="middle" font-size="11" fill="#1e3a8a">Page 1</text>
+  <rect x="195" y="110" width="105" height="24" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="247" y="126" text-anchor="middle" font-size="11" fill="#1e3a8a">Page 2</text>
+  <text x="185" y="150" text-anchor="middle" font-size="10" fill="#1d4ed8">min: 1, max: 3</text>
+
+  <!-- column chunk name -->
+  <rect x="325" y="82" width="250" height="85" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="450" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">Column Chunk: name</text>
+  <rect x="340" y="110" width="105" height="24" fill="#d1fae5" stroke="#059669"/>
+  <text x="392" y="126" text-anchor="middle" font-size="11" fill="#065f46">Page 1</text>
+  <rect x="460" y="110" width="105" height="24" fill="#d1fae5" stroke="#059669"/>
+  <text x="512" y="126" text-anchor="middle" font-size="11" fill="#065f46">Page 2</text>
+  <text x="450" y="150" text-anchor="middle" font-size="10" fill="#047857">dictionary encoded</text>
+
+  <!-- column chunk age -->
+  <rect x="590" y="82" width="250" height="85" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+  <text x="715" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">Column Chunk: age</text>
+  <rect x="605" y="110" width="105" height="24" fill="#ffedd5" stroke="#ea580c"/>
+  <text x="657" y="126" text-anchor="middle" font-size="11" fill="#9a3412">Page 1</text>
+  <rect x="725" y="110" width="105" height="24" fill="#ffedd5" stroke="#ea580c"/>
+  <text x="777" y="126" text-anchor="middle" font-size="11" fill="#9a3412">Page 2</text>
+  <text x="715" y="150" text-anchor="middle" font-size="10" fill="#c2410c">min: 25, max: 30</text>
+
+  <!-- Row Group 2 (simplified) -->
+  <rect x="40" y="200" width="820" height="60" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="60" y="235" font-size="14" font-weight="700" fill="#334155">Row Group 2</text>
+  <text x="450" y="235" text-anchor="middle" font-size="12" fill="#94a3b8">(id / name / age Column Chunk 동일 구조 반복)</text>
+
+  <text x="450" y="290" text-anchor="middle" font-size="20" fill="#94a3b8">⋮</text>
+
+  <!-- Footer -->
+  <rect x="40" y="320" width="820" height="90" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2.5"/>
+  <text x="60" y="345" font-size="14" font-weight="700" fill="#5b21b6">Footer</text>
+  <text x="60" y="368" font-size="12" fill="#6d28d9">Schema (컬럼명·타입) · 각 Row Group / Column Chunk의 min·max·null count · 파일 내 오프셋 위치</text>
+  <text x="60" y="390" font-size="12" fill="#6d28d9">→ 파일을 열 때 Footer만 먼저 읽어서, 실제로 읽어야 할 Row Group·Column Chunk를 미리 판단한다</text>
+
+  <!-- annotation arrow from footer to row groups -->
+  <path d="M 800 320 C 800 290, 800 200, 800 182" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arrow-gray)"/>
+
+  <text x="450" y="445" text-anchor="middle" font-size="13" fill="#475569">예) WHERE age &gt; 30 이면, min/max가 안 맞는 Row Group은 통째로 skip</text>
+  <text x="450" y="468" text-anchor="middle" font-size="13" fill="#475569">쿼리에서 필요한 컬럼의 Column Chunk만 읽고, 나머지는 아예 디스크에서 읽지도 않는다</text>
+  <text x="450" y="491" text-anchor="middle" font-size="13" fill="#475569">(Projection Pushdown + Predicate Pushdown)</text>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480" viewBox="0 0 1000 480" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="1000" height="480" fill="#ffffff"/>
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <text x="250" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">실제 저장 구조 (Bucket + Key)</text>
+  <text x="750" y="34" text-anchor="middle" font-size="17" font-weight="700" fill="#1e293b">콘솔에서 보이는 모습</text>
+
+  <!-- LEFT: flat bucket -->
+  <rect x="40" y="55" width="420" height="330" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="60" y="80" font-size="13" font-weight="700" fill="#334155">Bucket: my-data-bucket</text>
+
+  <g font-family="monospace" font-size="12.5" fill="#1e3a8a">
+    <rect x="60" y="95" width="380" height="30" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="70" y="114">logs/2026/08/20/access.log</text>
+
+    <rect x="60" y="133" width="380" height="30" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="70" y="152">data/etf/basDt=20260820/part-00000.parquet</text>
+
+    <rect x="60" y="171" width="380" height="30" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="70" y="190">data/etf/basDt=20260820/part-00001.parquet</text>
+
+    <rect x="60" y="209" width="380" height="30" fill="#eff6ff" stroke="#2563eb"/>
+    <text x="70" y="228">images/profile.png</text>
+  </g>
+
+  <text x="60" y="270" font-size="12.5" fill="#475569">→ 전부 같은 레벨의 "Key" 문자열일 뿐, 실제 디렉토리 구조는 없다</text>
+  <text x="60" y="292" font-size="12.5" fill="#475569">→ Key 안에 포함된 <tspan font-family="monospace" fill="#b91c1c">/</tspan> 는 그냥 문자 하나</text>
+
+  <!-- divider -->
+  <line x1="500" y1="60" x2="500" y2="400" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- RIGHT: folder tree illusion -->
+  <rect x="540" y="55" width="420" height="330" rx="8" fill="#f8fafc" stroke="#334155" stroke-width="2"/>
+  <text x="560" y="80" font-size="13" font-weight="700" fill="#334155">my-data-bucket</text>
+
+  <g font-family="monospace" font-size="12.5" fill="#334155">
+    <text x="575" y="105"><tspan fill="#94a3b8">📁</tspan> logs/</text>
+    <text x="595" y="127"><tspan fill="#94a3b8">📁</tspan> 2026/08/20/</text>
+    <text x="615" y="149"><tspan fill="#94a3b8">📄</tspan> access.log</text>
+
+    <text x="575" y="177"><tspan fill="#94a3b8">📁</tspan> data/</text>
+    <text x="595" y="199"><tspan fill="#94a3b8">📁</tspan> etf/</text>
+    <text x="615" y="221"><tspan fill="#94a3b8">📁</tspan> basDt=20260820/</text>
+    <text x="635" y="243"><tspan fill="#94a3b8">📄</tspan> part-00000.parquet</text>
+    <text x="635" y="265"><tspan fill="#94a3b8">📄</tspan> part-00001.parquet</text>
+
+    <text x="575" y="293"><tspan fill="#94a3b8">📁</tspan> images/</text>
+    <text x="595" y="315"><tspan fill="#94a3b8">📄</tspan> profile.png</text>
+  </g>
+
+  <text x="560" y="350" font-size="12.5" fill="#475569">→ 콘솔이 Key를 <tspan font-family="monospace" fill="#b91c1c">/</tspan> 기준으로 잘라서</text>
+  <text x="560" y="372" font-size="12.5" fill="#475569">폴더처럼 "보여줄 뿐"이다</text>
+
+  <path d="M 460 220 C 480 220, 480 220, 500 220" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow-gray)"/>
+
+  <text x="500" y="440" text-anchor="middle" font-size="13" fill="#475569">그래서 Hive에서 파티션 경로(<tspan font-family="monospace">basDt=20260820/</tspan>)를 Key 접두어로 그대로 활용할 수 있다</text>
+</svg>

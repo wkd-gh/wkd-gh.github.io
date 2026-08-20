@@ -1,5 +1,5 @@
 ---
-title: 매일 아침, Slack으로 날아오는 BigQuery 영수증
+title: Slack으로 날아오는 BigQuery 영수증
 date: 2026-08-18 22:00:00 +0900
 categories: [Cloud, GCP]
 tags: [Airflow, BigQuery, Slack]
@@ -12,7 +12,7 @@ media_subpath: /assets/img/posts/2026-08-18-bigquery-cost-monitoring-slack-alert
 
 ### <i class="fas fa-magnifying-glass-dollar fa-fw"></i> **왜 필요했나**
 
-Google의 BigQuery는 쿼리 스캔량(Bytes Scanned) 기준으로 과금되는 종량제 시스템이다. 비효율적인 쿼리 하나가 순식간에 큰 비용으로 이어질 수 있는데, 정작 "누가 어떤 쿼리로 얼마나 스캔했는지"는 매번 콘솔에 직접 들어가서 확인해야 했다. 제일 큰 문제는 해당 내용을 다음 결제 주기가 돼서야 알아차리는 경우가 많았다.
+Google의 BigQuery는 쿼리 스캔량(Bytes Scanned)을 기준으로 과금되는 종량제 시스템이다. 비효율적인 쿼리 하나가 순식간에 큰 비용으로 이어질 수 있는데, 정작 "누가 어떤 쿼리로 얼마나 스캔했는지"는 매번 콘솔에 직접 들어가서 확인해야 했다. 제일 큰 문제는 해당 내용을 다음 결제 주기가 돼서야 알아차리는 경우가 많았다.
 
 그래서 목표를 아래와 같이 잡았다.
 
@@ -55,9 +55,9 @@ SELECT
   SUM(total_bytes_processed) AS total_bytes_processed,
   ROUND(SUM(total_bytes_processed) / POW(1024, 3), 2) AS total_gib_processed,
   ROUND(SUM(total_bytes_processed) / POW(1024, 4), 4) AS total_tib_processed,
-  ROUND((SUM(total_bytes_processed) / POW(1024, 4)) * 6.25, 2) AS estimated_cost_usd
+  ROUND((SUM(total_bytes_processed) / POW(1024, 4)) * 7.5, 2) AS estimated_cost_usd
 FROM
-  `region-us`.INFORMATION_SCHEMA.JOBS_BY_PROJECT
+  `region-asia-northeast3`.INFORMATION_SCHEMA.JOBS_BY_PROJECT
 WHERE
   DATE(creation_time, "Asia/Seoul") = DATE_SUB(CURRENT_DATE("Asia/Seoul"), INTERVAL 1 DAY)
   AND job_type = "QUERY"
@@ -70,8 +70,8 @@ ORDER BY
 ```
 
 - `INFORMATION_SCHEMA.JOBS_BY_PROJECT`는 BigQuery가 기본 제공하는 메타데이터 뷰라, 별도 로깅 인프라 없이도 프로젝트 단위 쿼리 이력을 그대로 조회할 수 있다.
-- On-demand 분석 요율은 [GCP 공식 가격 정책](https://cloud.google.com/bigquery/pricing) 기준 TiB당 $6.25(매달 첫 1TiB는 무료)로, 이 글을 쓰는 시점에도 동일하게 확인된다. 다만 가격 정책은 바뀔 수 있으니, 실제로 쓸 때는 그때그때 다시 확인하는 게 안전하다.
-- `statement_type != "SCRIPT"`는 멀티 스테이트먼트 스크립트를 실행했을 때 생기는 중복 집계를 막기 위한 조건이다. 스크립트를 실행하면 그 안의 각 SQL문이 개별 job으로 기록되는 것과 별개로, 스크립트 전체를 대표하는 부모 `SCRIPT` job이 하나 더 생기는데, 이 부모 job의 `total_bytes_processed`에는 하위 SQL문들의 처리량이 전부 합산되어 들어가 있다. 그래서 이 조건 없이 그냥 합산하면 하위 쿼리 + 부모 SCRIPT job이 중복으로 잡혀서 실제보다 사용량이 부풀려진다.
+- 다루는 프로젝트들이 전부 서울 리전이라 `region-asia-northeast3`로 조회했다. On-demand 분석 요율도 리전마다 달라서, 서울 기준 TiB당 $7.5로 계산했다. [GCP 공식 가격 정책](https://cloud.google.com/bigquery/pricing)에서 리전별 요율을 다시 확인하고 쓰는 게 안전하다.
+- `statement_type != "SCRIPT"`는 멀티 스테이트먼트 스크립트 실행 시 부모 `SCRIPT` job에 하위 SQL문들의 사용량이 중복으로 합산되는 걸 막기 위한 조건이다.
 
 ### <i class="fas fa-robot fa-fw"></i> **Airflow DAG**
 
@@ -89,20 +89,20 @@ from datetime import timedelta
 # 1) 사용자의 함수 import
 # --------------------------------
 try:
-    from include.utils.security.sec_alert_bq_usage_noti import (
+    from include.utils.bq_usage_noti import (
         run_bq_report_and_notify_project_a,
         run_bq_report_and_notify_project_b,
         run_bq_report_and_notify_project_c,
     )
 except Exception as e:
-    raise AirflowFailException(f"Cannot import python_func from include.utils.security.sec_alert_bq_usage_noti: {e}")
+    raise AirflowFailException(f"Cannot import python_func from include.utils.bq_usage_noti: {e}")
 
 try:
-    from include.utils.common.slack_noti import (
+    from include.utils.slack_noti import (
         slack_failed_callback,
     )
 except Exception as e:
-    raise AirflowFailException(f"Cannot import python_func from include.utils.common.slack_noti: {e}")
+    raise AirflowFailException(f"Cannot import python_func from include.utils.slack_noti: {e}")
 
 
 # --------------------------------
@@ -127,16 +127,16 @@ def t_run_bq_report_and_notify_project_c(**_):
 KST = pendulum.timezone("Asia/Seoul")
 
 with DAG(
-    dag_id="sec_alert_bq_usage_noti_dag",
+    dag_id="bq_usage_noti_dag",
     description="BigQuery 사용량 알림 DAG",
     schedule="30 09 * * *",                              # 매일 09:30 (KST)
-    start_date=pendulum.datetime(2025, 11, 27, 19, 0, tz=KST),
-    catchup=False,                                        # backfill 안 함
-    max_active_runs=1,                                    # 이전 실행이 아직 끝나기 전에 다음 스케줄이 겹쳐 돌지 않도록 방지
+    start_date=pendulum.datetime(2026, 8, 10, 9, 30, tz=KST),
+    catchup=False,                                        
+    max_active_runs=1,                                   # 이전 실행이 아직 끝나기 전에 다음 스케줄이 겹쳐 돌지 않도록 방지
     default_args={
-        "owner": "data-team@company.com",                 # DAG owner를 명시해야 PR 리뷰 규칙을 통과하도록 팀 컨벤션을 정해뒀다
+        "owner": "data-team@company.com",                # DAG owner를 명시해야 PR 리뷰 규칙을 통과하도록 팀 컨벤션을 정해뒀다
         "retries": 3,
-        "on_failure_callback": slack_failed_callback,      # 실패 시 슬랙 알림
+        "on_failure_callback": slack_failed_callback,    # 실패 시 슬랙 알림
     },
     tags=["GCP", "cost-saving", "BigQuery"],
 ) as dag:
@@ -163,7 +163,7 @@ with DAG(
 
 - Airflow 3.x부터는 `PythonOperator`도 `airflow.providers.standard.operators.python`에서 가져온다. 2.x에 익숙하다면 import 경로가 바뀐 걸 헷갈리기 쉽다.
 - import 단계에서부터 `try-except`로 감싸고 `AirflowFailException`을 던지게 해뒀다. 함수 하나만 잘못 옮겨져 있어도 DAG 파싱 자체가 조용히 실패하는 대신, 원인이 로그에 명확히 남는다.
-- 세 프로젝트를 굳이 `>>`로 순차 실행시킨 것도 특징이다. 서로 의존관계는 없어서 병렬로 돌려도 되지만, 초기 버전이라 우선 단순하게 순차로 짜뒀다. 나중에 `TaskGroup`으로 묶어서 병렬화할 여지가 있다.
+- 세 프로젝트를 굳이 `>>`로 순차 실행시킨 것도 특징이다. 서로 의존관계는 없어서 병렬로 돌려도 되지만, 초기 버전이라 우선 단순하게 순차로 짜뒀다.
 
 ### <i class="fas fa-code fa-fw"></i> **주요 로직**
 
@@ -178,7 +178,7 @@ with DAG(
 ![BigQuery 사용량 리포트 Slack 메시지](slack_bq_report_result.png){: width="1754" height="840" }
 _전일 기준 BigQuery 사용량 리포트 예시_
 
-Date/Total Cost/Data Usage/Total Jobs 요약과 함께, 사용량이 많은 순으로 유저를 정렬해서 보여준다. 콘솔에 따로 들어가지 않아도 슬랙 메시지 하나로 "어제 얼마나 썼고 누가 제일 많이 썼는지"가 바로 파악된다.
+Date/Total Cost/Data Usage/Total Jobs 요약과 함께, 사용량이 많은 순으로 유저를 정렬해서 보여준다. 콘솔에 따로 들어가지 않아도 슬랙 메시지 하나로 "어제 얼마나 썼고 누가 제일 많이 썼는지"가 바로 파악된다. 더 자세히 파고들고 싶을 때를 위해 메시지 하단에 **BigQuery Console** 버튼도 같이 붙여둬서, 클릭 한 번으로 바로 콘솔까지 넘어갈 수 있게 했다.
 
 ### <i class="fas fa-chart-line fa-fw"></i> **기대 효과**
 
@@ -193,4 +193,4 @@ Date/Total Cost/Data Usage/Total Jobs 요약과 함께, 사용량이 많은 순�
 
 ### <i class="fas fa-flag-checkered fa-fw"></i> **마무리**
 
-원래 기획 문서엔 "시작 전" 상태로 남아있었는데, DAG 코드를 다시 열어보니 이미 얼추 짜서 돌려본 흔적이 있었다. 이번에 글로 정리해뒀으니, 다음엔 이 글을 레퍼런스 삼아 바로 이어서 돌릴 수 있을 것 같다. 순차 실행으로 짜둔 세 개의 task도 언젠가 `TaskGroup`으로 묶어서 병렬화해보고 싶다.
+콘솔에 매번 들어가서 확인하던 걸 슬랙 메시지 하나로 줄인 것뿐인데, 체감되는 편의성은 생각보다 컸다. 무엇보다 "내가 어제 얼마나 썼는지"가 매일 아침 눈에 보이니, 쿼리 하나 짤 때도 스캔량을 한 번 더 생각하게 되는 효과가 은근히 큰 것 같다.
