@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="1000" height="420" fill="#ffffff"/>
+
+  <text x="500" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">같은 테이블, 같은 결과 — WHERE 절 하나 차이로 달라지는 스캔 비용</text>
+  <text x="500" y="56" text-anchor="middle" font-size="12.5" fill="#64748b">테이블 전체 10TB, 하루 파티션은 약 110GB 기준 · On-demand $6.25/TiB</text>
+
+  <!-- Bar 1: no partition filter -->
+  <text x="60" y="120" font-size="13.5" font-weight="700" fill="#334155">SELECT * FROM events</text>
+  <text x="60" y="140" font-size="12" fill="#64748b">(파티션 필터 없음 → 테이블 전체 스캔)</text>
+  <rect x="60" y="155" width="820" height="46" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="490" y="184" text-anchor="middle" font-size="15" font-weight="700" fill="#991b1b">10TB 스캔 → 약 $62.50</text>
+
+  <!-- Bar 2: with partition filter -->
+  <text x="60" y="260" font-size="13.5" font-weight="700" fill="#334155">SELECT * FROM events WHERE basDt = '20260822'</text>
+  <text x="60" y="280" font-size="12" fill="#64748b">(파티션 필터로 하루치만 스캔)</text>
+  <rect x="60" y="295" width="820" height="46" rx="6" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <rect x="60" y="295" width="9" height="46" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="500" y="324" text-anchor="middle" font-size="15" font-weight="700" fill="#166534">110GB 스캔 → 약 $0.69</text>
+
+  <path d="M 490 200 C 490 220, 500 230, 500 250" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <text x="500" y="385" text-anchor="middle" font-size="13" fill="#475569">쿼리 결과(오늘 데이터)는 똑같은데, 스캔량 차이만으로 비용이 약 90배 벌어진다</text>
+</svg>
