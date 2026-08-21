@@ -26,3 +26,11 @@
 .post-navigation .btn:not(.disabled):hover::before {
   color: var(--link-color);
 }
+
+/* Default embed-video fills the whole content column at 16:9, which reads
+   oversized next to body text. Cap it to a smaller, centered width. */
+.content .embed-video {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}

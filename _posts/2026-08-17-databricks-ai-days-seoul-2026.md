@@ -26,6 +26,10 @@ _카카오스타일 기존(AS-IS) 아키텍처_
 ![카카오스타일 목표(TO-BE) 아키텍처](kakaostyle_to_be.jpg){: width="1600" height="900" }
 _카카오스타일 목표(TO-BE) 아키텍처, Databricks와 기존 AWS 스택을 병행_
 
+발표 전체 흐름은 아래 영상에서 확인할 수 있다.
+
+{% include embed/youtube.html id='6Bd8rBZPUqo' %}
+
 ### <i class="fas fa-layer-group fa-fw"></i> **NOL 유니버스 — Databricks 없이 만들었다면**
 
 NOL 유니버스 세션은 "Databricks 없이 이 시스템을 만들어야 했다면?"이라는 질문으로 시작했다. 실제로 Databricks 없이 동일한 데이터 플랫폼을 구성하려면, 모델 학습·배치·공통 인프라·런타임 영역마다 SageMaker, EMR, MWAA, Athena, Lambda, API Gateway, Secrets Manager처럼 서로 다른 서비스를 각각 학습하고 운영해야 한다.
@@ -37,6 +41,10 @@ _Databricks 없이 이 시스템을 만들었다면 필요했을 서비스들_
 
 ![NOL 유니버스 Overall Architecture](nol_universe_architecture.jpg){: width="1600" height="900" }
 _Unity Catalog + Workflow 기반 Self Segmentation 아키텍처_
+
+이 질문에서 시작하는 발표 자체가 재밌으니 아래 영상을 보는 걸 추천한다.
+
+{% include embed/youtube.html id='MBZunn-yCrc' %}
 
 ### <i class="fas fa-shirt fa-fw"></i> **무신사 — Genie 정확도를 끌어올리는 데이터마트 설계**
 
@@ -68,6 +76,10 @@ _Genie Benchmark 설계, 대표적인 Error Type 기반으로 실패 유형을 �
 
 결국 이 5가지 유형만 의도적으로 막아도 훨씬 나은 결과를 얻을 수 있었다는 게 무신사 팀의 결론이었다. Genie 도입을 고민하고 있다면 이 데이터마트 설계 기준과 실수 유형 리스트만 챙겨도 시행착오를 꽤 줄일 수 있을 것 같다.
 
+설계 원칙을 더 자세히 듣고 싶다면 원본 발표를 챙겨보길 추천한다.
+
+{% include embed/youtube.html id='zUKr8gsBRyk' %}
+
 ### <i class="fas fa-carrot fa-fw"></i> **한살림 — 수요예측 시스템**
 
 한살림은 온프레미스 DB(ERP)에서 DW를 거쳐 Databricks로 데이터를 가져오는 수요예측 시스템 구성도를 공유했다. AutoML로 모델을 학습하고, Databricks Notebook에서 Python 스크립트를 운영하며, Job Scheduler·Job Monitoring까지 Databricks Workflow로 관리하는 구조였다.
@@ -76,6 +88,10 @@ _Genie Benchmark 설계, 대표적인 Error Type 기반으로 실패 유형을 �
 _한살림 수요예측 시스템 구성도 (현재)_
 
 솔직히 말하면 한살림 세션은 이 구성도 하나 말고는 크게 새로 얻어간 내용은 없었다. 그래도 온프레미스 DW와 클라우드 데이터 플랫폼을 JDBC/DBLink로 연동하는 하이브리드 구조 자체는 참고할 만했다.
+
+궁금하면 아래 영상으로 나머지 내용도 확인해볼 수 있다.
+
+{% include embed/youtube.html id='_IjvoRFojBY' %}
 
 ### <i class="fas fa-tv fa-fw"></i> **LG전자 — 5명이 200명 넘는 사용자를 지원하는 법**
 
@@ -100,6 +116,10 @@ _실시간 알림 · 비용 모니터링 · 성능 모니터링 · 데이터 품
 
 ![LG전자 운영과 확산](lg_operation_scale.jpg){: width="1600" height="900" }
 _운영과 확산 — 3→5명의 운영자로 200명 이상의 사용자를 지원_
+
+개인적으로 가장 밀도 있던 세션인 만큼, 원본 발표로 직접 듣는 걸 추천한다.
+
+{% include embed/youtube.html id='ZnBgC0eT1lw' %}
 
 ### <i class="fas fa-flag-checkered fa-fw"></i> **마무리**
 
