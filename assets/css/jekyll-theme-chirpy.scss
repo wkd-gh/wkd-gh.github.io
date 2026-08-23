@@ -34,3 +34,67 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Link preview card (used via _includes/link-preview.html) - mimics a
+   messenger-style link unfurl: thumbnail + title + description + domain. */
+.content .link-preview-card {
+  margin-bottom: 1rem;
+
+  > a {
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+    border: 1px solid var(--main-border-color);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--card-bg);
+    transition: background-color 0.2s ease-in-out;
+    border-bottom: 1px solid var(--main-border-color) !important;
+
+    &:hover {
+      background: var(--card-hover-bg);
+      color: inherit !important;
+      border-bottom: 1px solid var(--main-border-color) !important;
+    }
+  }
+
+  .link-preview-thumb {
+    flex: 0 0 120px;
+    aspect-ratio: 3 / 4;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--img-bg);
+  }
+
+  .link-preview-body {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.75rem 1rem 0.75rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .link-preview-title {
+    font-weight: 700;
+    color: var(--heading-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .link-preview-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted-color);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .link-preview-site {
+    font-size: 0.78rem;
+    color: var(--text-muted-color);
+  }
+}

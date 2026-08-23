@@ -1,0 +1,14 @@
+{%- assign _img_url = include.image -%}
+{%- unless _img_url contains ':' -%}
+  {%- assign _img_url = page.media_subpath | default: '' | append: '/' | append: _img_url | replace: '//', '/' | relative_url -%}
+{%- endunless -%}
+<div class="link-preview-card">
+<a href="{{ include.url }}" target="_blank" rel="noopener noreferrer nofollow">
+  <div class="link-preview-thumb" style="background-image: url('{{ _img_url }}');" role="img" aria-label="{{ include.title }}"></div>
+  <div class="link-preview-body">
+    <div class="link-preview-title">{{ include.title }}</div>
+    {% if include.desc %}<div class="link-preview-desc">{{ include.desc }}</div>{% endif %}
+    <div class="link-preview-site">{{ include.site }}</div>
+  </div>
+</a>
+</div>
