@@ -1,5 +1,5 @@
 ---
-title: 요즘 채용 공고마다 빅쿼리가 나오는 이유
+title: 요즘 JD마다 빅쿼리가 나오는 이유
 date: 2026-08-22 01:00:00 +0900
 categories: [Cloud, GCP]
 tags: [BigQuery, Redshift, GCP, Data Warehouse]

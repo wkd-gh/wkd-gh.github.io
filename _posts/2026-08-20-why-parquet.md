@@ -1,5 +1,5 @@
 ---
-title: 왜 다들 파케이, 파케이 하는 걸까
+title: 왜 다들 parquet, parquet 하는 걸까
 date: 2026-08-20 20:00:00 +0900
 categories: [Data Engineering, Data]
 tags: [Parquet, CSV, JSON, ORC, Arrow, File Format]
