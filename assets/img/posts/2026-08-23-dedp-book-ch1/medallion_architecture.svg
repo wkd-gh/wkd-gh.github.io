@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="440" viewBox="0 0 1000 440" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="1000" height="440" fill="#ffffff"/>
+
+  <text x="500" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">사례 연구 프로젝트(블로그 데이터 분석 플랫폼)의 데이터 레이어</text>
+
+  <defs>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/>
+    </marker>
+  </defs>
+
+  <!-- BRONZE -->
+  <g>
+    <circle cx="160" cy="130" r="46" fill="#fde8d0" stroke="#b45309" stroke-width="3"/>
+    <text x="160" y="140" text-anchor="middle" font-size="22" font-weight="700" fill="#92400e">1</text>
+    <text x="160" y="200" text-anchor="middle" font-size="16" font-weight="700" fill="#92400e">Bronze</text>
+    <rect x="50" y="220" width="220" height="130" rx="8" fill="#fff7ed" stroke="#b45309" stroke-width="1.5"/>
+    <text x="160" y="248" text-anchor="middle" font-size="12.5" font-weight="700" fill="#92400e">원시 데이터 저장</text>
+    <text x="70" y="272" font-size="12" fill="#78350f">· 데이터가 변경되지 않은 상태</text>
+    <text x="70" y="294" font-size="12" fill="#78350f">· 소스 그대로 보존</text>
+    <text x="70" y="316" font-size="12" fill="#78350f">· 심각한 품질 문제가</text>
+    <text x="70" y="334" font-size="12" fill="#78350f">  있을 수 있음</text>
+  </g>
+
+  <path d="M 280 285 L 350 285" stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#arrow-gray)"/>
+  <text x="315" y="272" text-anchor="middle" font-size="11.5" fill="#64748b">정제</text>
+
+  <!-- SILVER -->
+  <g>
+    <circle cx="500" cy="130" r="46" fill="#e5e7eb" stroke="#64748b" stroke-width="3"/>
+    <text x="500" y="140" text-anchor="middle" font-size="22" font-weight="700" fill="#334155">2</text>
+    <text x="500" y="200" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">Silver</text>
+    <rect x="390" y="220" width="220" height="130" rx="8" fill="#f8fafc" stroke="#64748b" stroke-width="1.5"/>
+    <text x="500" y="248" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">정리·강화된 데이터셋</text>
+    <text x="410" y="272" font-size="12" fill="#475569">· 이상치·중복 제거</text>
+    <text x="410" y="294" font-size="12" fill="#475569">· 스키마 정리</text>
+    <text x="410" y="316" font-size="12" fill="#475569">· 다른 데이터와 조인해</text>
+    <text x="410" y="334" font-size="12" fill="#475569">  값이 강화된 상태</text>
+  </g>
+
+  <path d="M 620 285 L 690 285" stroke="#94a3b8" stroke-width="2.5" fill="none" marker-end="url(#arrow-gray)"/>
+  <text x="655" y="272" text-anchor="middle" font-size="11.5" fill="#64748b">가공</text>
+
+  <!-- GOLD -->
+  <g>
+    <circle cx="840" cy="130" r="46" fill="#fef3c7" stroke="#ca8a04" stroke-width="3"/>
+    <text x="840" y="140" text-anchor="middle" font-size="22" font-weight="700" fill="#854d0e">3</text>
+    <text x="840" y="200" text-anchor="middle" font-size="16" font-weight="700" fill="#854d0e">Gold</text>
+    <rect x="730" y="220" width="220" height="130" rx="8" fill="#fffbeb" stroke="#ca8a04" stroke-width="1.5"/>
+    <text x="840" y="248" text-anchor="middle" font-size="12.5" font-weight="700" fill="#854d0e">최종 사용자용 데이터</text>
+    <text x="750" y="272" font-size="12" fill="#78350f">· 최종 사용자가 기대하는</text>
+    <text x="750" y="290" font-size="12" fill="#78350f">  형식으로 가공됨</text>
+    <text x="750" y="312" font-size="12" fill="#78350f">· 데이터 마트</text>
+    <text x="750" y="334" font-size="12" fill="#78350f">· 참조 데이터셋</text>
+  </g>
+
+  <text x="500" y="400" text-anchor="middle" font-size="13" fill="#475569">데이터 성숙도가 Bronze → Silver → Gold 순으로 단계적으로 높아진다</text>
+</svg>
