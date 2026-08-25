@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="1000" height="420" fill="#ffffff"/>
+
+  <text x="230" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">트랜잭션 테이블</text>
+  <text x="230" y="54" text-anchor="middle" font-size="12.5" fill="#64748b">행이 계속 늘어나는 형태</text>
+
+  <text x="770" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">크로스 테이블 (피벗)</text>
+  <text x="770" y="54" text-anchor="middle" font-size="12.5" fill="#64748b">스프레드시트에서 흔히 보는 형태</text>
+
+  <!-- LEFT: transaction table -->
+  <g font-family="monospace" font-size="13">
+    <rect x="70" y="80" width="320" height="34" fill="#1e293b"/>
+    <text x="90" y="103" fill="#ffffff">날짜</text>
+    <text x="200" y="103" fill="#ffffff">상품</text>
+    <text x="300" y="103" fill="#ffffff">금액</text>
+
+    <rect x="70" y="114" width="320" height="32" fill="#eff6ff" stroke="#cbd5e1"/>
+    <text x="90" y="135" fill="#334155">08/01</text>
+    <text x="200" y="135" fill="#334155">상품A</text>
+    <text x="300" y="135" fill="#334155">1,000</text>
+
+    <rect x="70" y="146" width="320" height="32" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="90" y="167" fill="#334155">08/01</text>
+    <text x="200" y="167" fill="#334155">상품B</text>
+    <text x="300" y="167" fill="#334155">2,000</text>
+
+    <rect x="70" y="178" width="320" height="32" fill="#eff6ff" stroke="#cbd5e1"/>
+    <text x="90" y="199" fill="#334155">08/02</text>
+    <text x="200" y="199" fill="#334155">상품A</text>
+    <text x="300" y="199" fill="#334155">1,500</text>
+
+    <rect x="70" y="210" width="320" height="32" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="90" y="231" fill="#334155">08/02</text>
+    <text x="200" y="231" fill="#334155">상품B</text>
+    <text x="300" y="231" fill="#334155">2,500</text>
+  </g>
+  <text x="230" y="270" text-anchor="middle" font-size="18" fill="#94a3b8">⋮</text>
+
+  <!-- arrow -->
+  <path d="M 410 165 C 460 165, 460 165, 510 165" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#arrow)"/>
+  <text x="460" y="150" text-anchor="middle" font-size="12.5" fill="#475569">크로스 집계</text>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+
+  <!-- RIGHT: cross table -->
+  <g font-family="monospace" font-size="13">
+    <rect x="610" y="80" width="320" height="34" fill="#1e293b"/>
+    <text x="630" y="103" fill="#ffffff">날짜</text>
+    <text x="740" y="103" fill="#ffffff">상품A</text>
+    <text x="850" y="103" fill="#ffffff">상품B</text>
+
+    <rect x="610" y="114" width="320" height="34" fill="#ecfdf5" stroke="#059669"/>
+    <text x="630" y="137" fill="#065f46">08/01</text>
+    <text x="740" y="137" fill="#065f46">1,000</text>
+    <text x="850" y="137" fill="#065f46">2,000</text>
+
+    <rect x="610" y="148" width="320" height="34" fill="#ffffff" stroke="#059669"/>
+    <text x="630" y="171" fill="#065f46">08/02</text>
+    <text x="740" y="171" fill="#065f46">1,500</text>
+    <text x="850" y="171" fill="#065f46">2,500</text>
+  </g>
+
+  <text x="500" y="330" text-anchor="middle" font-size="13" fill="#475569">엑셀의 피벗 테이블 기능이 대표적인 크로스 집계 예시다</text>
+</svg>

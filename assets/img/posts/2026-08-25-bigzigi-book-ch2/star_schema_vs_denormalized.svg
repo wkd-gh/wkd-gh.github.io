@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="480" viewBox="0 0 1000 480" font-family="'Apple SD Gothic Neo','Malgun Gothic',Arial,sans-serif">
+  <rect width="1000" height="480" fill="#ffffff"/>
+
+  <text x="250" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">스타 스키마 (과거)</text>
+  <text x="750" y="34" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">비정규화 테이블 (요즘)</text>
+
+  <!-- LEFT: star schema -->
+  <g>
+    <!-- fact table center -->
+    <rect x="180" y="170" width="140" height="70" rx="6" fill="#eff6ff" stroke="#2563eb" stroke-width="2.5"/>
+    <text x="250" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">팩트 테이블</text>
+    <text x="250" y="220" text-anchor="middle" font-size="11" fill="#1e40af">id 키 위주</text>
+
+    <!-- dimension tables around -->
+    <rect x="60" y="70" width="120" height="54" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="120" y="102" text-anchor="middle" font-size="12" fill="#065f46">상품 디멘전</text>
+
+    <rect x="320" y="70" width="120" height="54" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="380" y="102" text-anchor="middle" font-size="12" fill="#065f46">고객 디멘전</text>
+
+    <rect x="60" y="290" width="120" height="54" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="120" y="322" text-anchor="middle" font-size="12" fill="#065f46">날짜 디멘전</text>
+
+    <rect x="320" y="290" width="120" height="54" rx="6" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="380" y="322" text-anchor="middle" font-size="12" fill="#065f46">지역 디멘전</text>
+
+    <line x1="220" y1="180" x2="160" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="280" y1="180" x2="360" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="220" y1="230" x2="160" y2="290" stroke="#94a3b8" stroke-width="1.5"/>
+    <line x1="280" y1="230" x2="360" y2="290" stroke="#94a3b8" stroke-width="1.5"/>
+  </g>
+
+  <text x="250" y="400" text-anchor="middle" font-size="12.5" fill="#475569">필요한 디멘전만 조인해서 사용</text>
+  <text x="250" y="422" text-anchor="middle" font-size="12.5" fill="#475569">팩트 테이블을 작게 유지해 고속화</text>
+
+  <!-- divider -->
+  <line x1="500" y1="60" x2="500" y2="440" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- RIGHT: denormalized single table -->
+  <g>
+    <rect x="650" y="150" width="220" height="120" rx="8" fill="#fff7ed" stroke="#ea580c" stroke-width="2.5"/>
+    <text x="760" y="180" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">하나의 거대한</text>
+    <text x="760" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">팩트 + 디멘전 결합 테이블</text>
+    <line x1="670" y1="215" x2="850" y2="215" stroke="#ea580c" stroke-width="1"/>
+    <text x="760" y="235" text-anchor="middle" font-size="11" fill="#c2410c">상품·고객·날짜·지역 정보를</text>
+    <text x="760" y="252" text-anchor="middle" font-size="11" fill="#c2410c">전부 한 테이블에 포함</text>
+  </g>
+
+  <text x="760" y="400" text-anchor="middle" font-size="12.5" fill="#475569">MPP·열 지향 압축 덕분에</text>
+  <text x="760" y="422" text-anchor="middle" font-size="12.5" fill="#475569">조인 없이도 충분히 빠름</text>
+</svg>
